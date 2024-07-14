@@ -12,6 +12,10 @@ from db_control.connect import engine
 from db_control.mymodels import Customers
 
 def myinsert(mymodel, values):
+    # IDのバリデーション
+    if not values.get("customer_id"):
+        return {"error": "customer_id is required"}, 400
+    
     # session構築
     Session = sessionmaker(bind=engine)
     session = Session()

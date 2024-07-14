@@ -12,15 +12,17 @@ const createCustomer = async (formData) => {
         customer_id: creating_customer_id,
         age: creating_age,
         gender: creating_gender,
-    })
+    });
 
-    const res = await fetch(process.env.API_ENDPOINT+`/customers`, {
+    const res = await fetch(process.env.API_ENDPOINT + `/customers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: body_msg,
     });
+
     if (!res.ok) {
-        throw new Error('Failed to create customer');
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to create customer');
     }
 
     revalidatePath(`/customers`);
